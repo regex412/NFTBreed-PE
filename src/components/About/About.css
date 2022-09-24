@@ -1,10 +1,10 @@
-#about {}
+#about {
+  padding-top: 2%;
+}
 
 .about-row {
   margin: 0px !important;
-  padding-bottom: 30px !important;
   overflow-y: auto;
-  padding: 30px;
 }
 
 .about-container {
@@ -84,7 +84,7 @@
   font-weight: 700;
   font-size: 20px;
   padding: 20px;
-  background: rgb(127, 85, 168);
+  background: rgb(100, 31, 169);
   margin: 30px !important;
 }
 
@@ -96,20 +96,45 @@
 }
 
 .depositBtn,
-.withdrawBtn {
+.withdrawBtn,
+.btn-connect {
   width: 100%;
-  color: rgb(221, 219, 219);
+  background-size: contain;
+  background-repeat: no-repeat;
+  color: white;
   border: none;
-  border-radius: 50px;
+  height: 60px;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 20px;
   padding: 15px;
-  background: rgb(127, 85, 168);
+  background-position: 50% 50%;
+  margin-bottom: 30px;
+  background-color: transparent;
+  background-image: url('../../assets/button.png');
 }
 
 .nftSelectBtn {
   border: none;
   background-color: transparent;
+}
+
+.depositBtn:hover {
+  font-size: 22px;
+  transition: 0.5s;
+  color: white;
+}
+
+.btn-connect:hover {
+  font-size: 22px;
+  transition: 0.5s;
+  color: white;
+}
+
+
+.withdrawBtn:hover {
+  font-size: 22px;
+  transition: 0.5s;
+  color: white;
 }
 
 @media (max-width: 1380px) {

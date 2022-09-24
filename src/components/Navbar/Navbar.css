@@ -12,24 +12,13 @@ nav {
 
 .headerBarItem,
 .headerBarItem-DAPP {
+  width: 100%;
   display: flex !important;
   justify-content: center !important;
   padding-top: 30px;
 }
 
-.headerBarItem-DAPP>button {
-  color: rgb(221, 219, 219);
-  border: none;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 20px;
-  padding: 15px;
-  background: rgb(127, 85, 168);
-}
 
-.headerBarItem-DAPP>button:hover {
-  color: white;
-}
 
 .headerBarItem>button {
   color: rgb(72, 26, 117);
