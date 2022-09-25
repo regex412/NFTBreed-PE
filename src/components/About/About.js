@@ -19,7 +19,7 @@ const ethers = require('ethers')
 export const About = () => {
   const [isConnected, setIsConnected] = useState(false)
   const [withdrawCount, setWithDrawCount] = useState(false)
-  const [withdrawState, setWithDrawState] = useState(true)
+  const [withdrawState, setWithDrawState] = useState(false)
   const [withdrawLeftTime, setWithDrawLeftTime] = useState('')
   const [defaultAccount, setDefaultAccount] = useState('')
   const [aanfts, setAANfts] = useState([])
@@ -35,7 +35,7 @@ export const About = () => {
   const [ppselectedtokenID, setPPSelectTokenID] = useState('')
   const [aaTravelNftSeleted, setAATravelNftSelected] = useState('')
   const [ppTravelNftSelected, setPPTravelNftSelected] = useState('')
-  const [leftTime, setLeftTime] = useState('')
+  const [leftTimeSecond, setLeftTimeSecond] = useState('')
   
   useEffect(() => {
     const callStaking = async () => {
@@ -149,6 +149,7 @@ export const About = () => {
 
     }
 
+
     aanftlist.sort((a, b) => {
       return a.tokenId - b.tokenId
     })
@@ -221,16 +222,12 @@ export const About = () => {
   }
 
   const withdraw = () => {
-    console.log("lefttime"+leftTime)
-    let limitTime = 3
+    let limitTime = 180 // limitTime is 180s
     let currentTimeInSeconds = Math.floor(Date.now() / 1000)
-    console.log("current"+currentTimeInSeconds)
-    setWithDrawLeftTime(Number(Math.floor(limitTime - (currentTimeInSeconds - leftTime) / 60)))
-    if (Number(limitTime * 60 - (currentTimeInSeconds - leftTime)) <=0) {
-      setWithDrawState(true)
-    } else {
-      setWithDrawState(false)
-    }
+    let lefttime = localStorage.getItem("leftTime")
+    console.log(lefttime)
+    setWithDrawLeftTime(Number(limitTime - (currentTimeInSeconds - lefttime)))
+    console.log(Number(limitTime - (currentTimeInSeconds - lefttime)))
     if (isConnected) {
       if (aaTravelNftSeleted === "" || ppTravelNftSelected === "") {
         Modal.info({
@@ -239,8 +236,8 @@ export const About = () => {
             },
         })
       } else {
-        if (withdrawState) {
-          breedingContract.withdraw(aaTravelNftSeleted, ppTravelNftSelected)
+        if (Number(limitTime - (currentTimeInSeconds - leftTimeSecond)) <=0) {
+          breedingContract.withdraw(aaTravelNftSeleted, ppTravelNftSelected, { gasLimit: 300000})
           .then((tx) => {
             tx.wait().then(() => { 
               Modal.success({
@@ -253,7 +250,7 @@ export const About = () => {
           })
         } else {
           Modal.error({
-            content: 'Can not Withdraw! After'+ ' ' + withdrawLeftTime + 'mins ' + 'can withdraw',
+            content: 'Can not Withdraw! After'+ ' ' + withdrawLeftTime + 's ' + 'can withdraw',
               onOk() {
               },
           })
@@ -272,12 +269,12 @@ export const About = () => {
     <ScrollAnimation animateIn="fadeIn">
       <section id="about">
       <Row gutter={[24, 24]} justify={"center"} className="headerBar">
-          <Col lg={4} xs={2}></Col>
+          <Col lg={4} xs={0}></Col>
         
-          <Col lg={16} xs={15} className="headerBarItem-DAPP">
-            <h1 style={{color:"rgb(221, 219, 219)", fontWeight:"800", fontSize:'60px', textAlign:'center'}}>Travel Program</h1>
+          <Col lg={16} xs={24} className="headerBarItem-DAPP">
+            <h1 style={{color:"white", fontWeight:"800", fontSize:'60px', textAlign:'center'}}>Travel Program</h1>
           </Col>
-          <Col lg={4} className="headerBarItem">
+          <Col lg={4} xs={0} className="headerBarItem">
           </Col>
         </Row>
         <Row gutter={[24, 24]} justify={"center"} className="headerBar">
@@ -295,7 +292,6 @@ export const About = () => {
                 <button className="btn-connect">
                   <span
                     style={{
-                      fontSize: '13px',
                       fontWeight: '800',
                       color: 'white',
                     }}
@@ -383,7 +379,6 @@ export const About = () => {
                               leftTime={token.leftTime}
                               setAATravelNftSelected={setAATravelNftSelected}
                               setPPTravelNftSelected={setPPTravelNftSelected}
-                              setLeftTime={setLeftTime}
                             />
                           )
                         })}

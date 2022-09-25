@@ -5,10 +5,4 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-body {
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-  background-image: url('./assets/homeBackground.png');
-}
+body {}
