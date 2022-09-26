@@ -50,6 +50,7 @@
 }
 
 .infoPanel {
+  background-color: rgb(34, 33, 33) !important;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,7 +59,7 @@
   border-radius: 20px;
   box-shadow: rgb(25 19 38 / 70%) 0px 8px 12px -8px, rgb(25 19 38 / 5%) 0px 1px 1px;
   padding: 10px;
-  background: white;
+  background: whie;
 }
 
 .top-title,

@@ -82,6 +82,7 @@ nav {
 }
 
 .ant-modal-content {
+  background-color: rgb(34, 33, 33) !important;
   box-shadow: rgb(25 19 38 / 70%) 0px 2px 12px -8px, rgb(25 19 38 / 5%) 0px 1px 1px !important;
   border-radius: 20px !important;
 
@@ -92,6 +93,7 @@ svg {
 }
 
 .ant-modal-confirm-content {
+  color: white !important;
   margin-left: 20px !important;
   font-size: 17px !important;
   font-weight: 700;

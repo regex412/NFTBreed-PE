@@ -99,6 +99,7 @@ export const About = () => {
         for (let j = 0; j < aanftList.length; j++) {
           aanftlist.push({
             tokenId: Number(aanftList[j]).toString(),
+            imgSrc:config.baseURI + '/' + aanftList[j] + '.jpg',
             isAANFT: true
           })
         }
@@ -108,6 +109,7 @@ export const About = () => {
         for (let j = 0; j < ppnftList.length; j++) {
           ppnftlist.push({
             tokenId: Number(ppnftList[j]).toString(),
+            imgSrc:config.dedbaseURI + '/' + ppnftList[j] + '.jpg',
             isAANFT: false
           })
         }
@@ -121,6 +123,8 @@ export const About = () => {
             travellist.push({
               aatokenId: Number(stakedInfo[j].stakedAlienID).toString(),
               pptokenId: Number(stakedInfo[j].stakedPlanetID).toString(),
+              imgAASrc:config.baseURI + '/' + stakedInfo[j].stakedAlienID + '.jpg',
+              imgPPSrc:config.dedbaseURI + '/' + stakedInfo[j].stakedPlanetID + '.jpg',
               leftTime: Number(stakedInfo[j].stakedTime).toString(),
             })
           }
@@ -130,17 +134,6 @@ export const About = () => {
         } else {
           setWithDrawCount(true)
         }
-        // // setStaked(stakedinfo.isStaked)
-        // console.log(Number(stakedinfo.stakedAlienID).toString())
-        // console.log(Number(stakedinfo.stakedAlienID).toString())
-        // let stakedTime = Number(stakedinfo.stakedTime.toString())
-        // let currentTimeInSeconds = Math.floor(Date.now() / 1000)
-        // setWithDrawLeftTime(Number(Math.floor(10 - (currentTimeInSeconds - stakedTime) / 60)))
-        // if ( Number(Math.floor(10 - (currentTimeInSeconds - stakedTime) / 60)) < 0) {
-        //   setWithDrawState(true)
-        // } else {
-        //   setWithDrawState(false)
-        // }
       })
 
       await breedingContract.SGBPrice().then((stakedInfo) => {
@@ -226,7 +219,8 @@ export const About = () => {
     let currentTimeInSeconds = Math.floor(Date.now() / 1000)
     let lefttime = localStorage.getItem("leftTime")
     console.log(lefttime)
-    setWithDrawLeftTime(Number(limitTime - (currentTimeInSeconds - lefttime)))
+    let leftMin = Math.floor((limitTime - (currentTimeInSeconds - lefttime)) / 60)
+    let leftSec = (limitTime - (currentTimeInSeconds - lefttime)) % 60
     console.log(Number(limitTime - (currentTimeInSeconds - lefttime)))
     if (isConnected) {
       if (aaTravelNftSeleted === "" || ppTravelNftSelected === "") {
@@ -236,7 +230,7 @@ export const About = () => {
             },
         })
       } else {
-        if (Number(limitTime - (currentTimeInSeconds - leftTimeSecond)) <=0) {
+        if (Number((currentTimeInSeconds - lefttime)) > 180) {
           breedingContract.withdraw(aaTravelNftSeleted, ppTravelNftSelected, { gasLimit: 300000})
           .then((tx) => {
             tx.wait().then(() => { 
@@ -250,7 +244,7 @@ export const About = () => {
           })
         } else {
           Modal.error({
-            content: 'Can not Withdraw! After'+ ' ' + withdrawLeftTime + 's ' + 'can withdraw',
+            content: 'Can not Withdraw! After'+ ' ' + leftMin + 'mins ' + leftSec + 'Secs' + ' ' +  ' can withdraw',
               onOk() {
               },
           })
@@ -272,7 +266,7 @@ export const About = () => {
           <Col lg={4} xs={0}></Col>
         
           <Col lg={16} xs={24} className="headerBarItem-DAPP">
-            <h1 style={{color:"white", fontWeight:"800", fontSize:'60px', textAlign:'center'}}>Travel Program</h1>
+            <h1 style={{color:"black", fontWeight:"800", fontSize:'60px', textAlign:'center'}}>Travel Program</h1>
           </Col>
           <Col lg={4} xs={0} className="headerBarItem">
           </Col>
@@ -312,13 +306,14 @@ export const About = () => {
             <div className="about-container">
               <div className="wrapper">
                 <div className="infoPanel">
-                <h1 style={{color:"rgb(127, 85, 168)", fontWeight:"700", fontSize:'30px', textAlign:'center'}}>AncientAliens NFTs</h1>
+                <h1 style={{color:"white", fontWeight:"700", fontSize:'30px', textAlign:'center'}}>AncientAliens NFTs</h1>
                   <div className="tokenGrid">
                     {aanfts.map((token) => {
                       return (
                         <NFTCard
                           tokenId={token.tokenId}
                           isAANFT={token.isAANFT}
+                          imgSrc={token.imgSrc}
                           setAASelectTokenID={setAASelectTokenID}
                         />
                       )
@@ -329,9 +324,9 @@ export const About = () => {
             </div>
           </Col>
           <Col lg={4} style={{marginTop:"10%"}}>
-            <h1 style={{color:"rgb(221, 219, 219)", fontWeight:"700", textAlign:"center", fontSize:"30px"}}>AA NFT: {aaselectedtokenID} </h1>
-            <h1 style={{color:"rgb(221, 219, 219)", fontWeight:"700", textAlign:"center", fontSize:"30px"}}> + </h1>
-            <h1 style={{ color: "rgb(221, 219, 219)", fontWeight: "700", textAlign: "center", fontSize: "30px" }}>PP NFT: {ppselectedtokenID} </h1>
+            <h1 style={{color:"white", fontWeight:"700", textAlign:"center", fontSize:"30px"}}>AA NFT: {aaselectedtokenID} </h1>
+            <h1 style={{color:"white", fontWeight:"700", textAlign:"center", fontSize:"30px"}}> + </h1>
+            <h1 style={{ color: "white", fontWeight: "700", textAlign: "center", fontSize: "30px" }}>PP NFT: {ppselectedtokenID} </h1>
             <button className="depositBtn" onClick={deposit}>Deposit</button>
             {withdrawCount ? (
               <>
@@ -346,13 +341,14 @@ export const About = () => {
             <div className="about-container">
               <div className="wrapper">
                 <div className="infoPanel">
-                  <h1 style={{color:"rgb(127, 85, 168)", fontWeight:"700", fontSize:'30px', textAlign:'center'}}>Planetoids NFTs</h1>
+                  <h1 style={{color:"white", fontWeight:"700", fontSize:'30px', textAlign:'center'}}>Planetoids NFTs</h1>
                   <div className="tokenGrid">
                   {ppnfts.map((token) => {
                       return (
                         <NFTCard
                           tokenId={token.tokenId}
                           isAANFT={token.isAANFT}
+                          imgSrc={token.imgSrc}
                           setPPSelectTokenID={setPPSelectTokenID}
                         />
                       )
@@ -369,7 +365,7 @@ export const About = () => {
                 <div className="about-container">
                   <div className="wrapper">
                     <div className="infoPanel">
-                      <h1 style={{color:"rgb(127, 85, 168)", fontWeight:"700", fontSize:'30px', textAlign:'center'}}>In Travel</h1>
+                      <h1 style={{color:"white", fontWeight:"700", fontSize:'30px', textAlign:'center'}}>In Travel</h1>
                       <div className="tokenGrid">
                         {travelList.map((token) => {
                           return (
@@ -377,6 +373,8 @@ export const About = () => {
                               aatokenId={token.aatokenId}
                               pptokenId={token.pptokenId}
                               leftTime={token.leftTime}
+                              imgAASrc={token.imgAASrc}
+                              imgPPSrc={token.imgPPSrc}
                               setAATravelNftSelected={setAATravelNftSelected}
                               setPPTravelNftSelected={setPPTravelNftSelected}
                             />
